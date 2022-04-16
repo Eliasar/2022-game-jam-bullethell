@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Confined
 {
-    public class PlayerHealth : MonoBehaviour
+    public class EnemyHealth : MonoBehaviour
     {
         public SerialFloat health;
+        [SerializeField] private float localHealth;
+
         public float DoNotTouch;
 
         // Property for overall health access
@@ -15,12 +17,26 @@ namespace Confined
         {
             get
             {
-                return health.Value;
+                if (health?.Value != null)
+                {
+                    return health.Value;
+                }
+                else
+                {
+                    return localHealth;
+                }
             }
 
             set
             {
-                health.Value = value;
+                if (health?.Value != null)
+                {
+                    health.Value = value;
+                }
+                else
+                {
+                    localHealth = value;
+                }
             }
         }
 
@@ -35,7 +51,7 @@ namespace Confined
             float damage = bullet.Damage;
 
             // Subtract from current health
-            collider.GetComponent<PlayerHealth>().Health -= damage;
+            collider.GetComponent<EnemyHealth>().Health -= damage;
 
             // If below 0, I don't know, fucking we'll do something, eh?
             if (Health <= 0)
