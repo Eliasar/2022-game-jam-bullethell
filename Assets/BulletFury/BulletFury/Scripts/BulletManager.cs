@@ -45,9 +45,13 @@ namespace BulletFury
         [SerializeField] private string seed;
         [SerializeField] private bool randomiseSeedOnAwake = true;
 
-        [SerializeField] private Material previewMat;
+        private Material _previewMat;
         
         private Squirrel3 _rnd;
+
+        #if UNITY_EDITOR
+        public bool playingEditorAnimation;
+        #endif
         
         public void SetTrackObjectForBullet(Transform toTrack, bool isTracking, int idx)
         {
@@ -361,7 +365,7 @@ namespace BulletFury
         
         private IEnumerator SpawnIE(Vector3 position, Vector3 forward)
         {
-            //yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
             OnWeaponFired?.Invoke();
             // keep a list of positions and rotations, so we can update the bullets all at once
             var positions = new List<Vector3>();
@@ -514,6 +518,9 @@ namespace BulletFury
         private static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
         private BulletContainer[] _editorBullets;
         private SceneView _sceneView;
+        private static readonly int Cutoff = Shader.PropertyToID("_Cutoff");
+        private static readonly int AlphaClip = Shader.PropertyToID("_AlphaClip");
+
         public void AnimateAlongPath()
         {
             _editorBullets = new BulletContainer[maxBullets];
@@ -601,10 +608,15 @@ namespace BulletFury
 
         private IEnumerator UpdateEditorBullets()
         {
+            #if UNITY_EDITOR
+            playingEditorAnimation = true;
+            #endif
             var deltaTime = 1/60f;
             var timer = bulletSettings.Lifetime;
             while (timer > 0)
             {
+                if (_editorBullets == null)
+                    yield break;
                 // update the bullets according to the settings
                 for (int i = _editorBullets.Length - 1; i >= 0; --i)
                 {
@@ -621,25 +633,54 @@ namespace BulletFury
                     _editorBullets[i].Position += _editorBullets[i].Velocity * deltaTime +
                                           _editorBullets[i].Force * deltaTime;
 
-           
                     _editorBullets[i].Rotation =  Quaternion.Normalize(_editorBullets[i].Rotation);
+
+                    var b = _editorBullets[i];
+                    var finalPos = b.Position;
+                    var rot = b.Rotation * Quaternion.Euler(90, 0, 0);
+                    var size = b.CurrentSize;
+                    if (Mathf.Approximately(rot.w, 0) && Mathf.Approximately(rot.x, 0) && Mathf.Approximately(rot.y, 0) && Mathf.Approximately(rot.z, 0))
+                        rot = Quaternion.identity;
+                    var mtx = Matrix4x4.TRS(finalPos, rot,
+                        Vector3.one * size);
+
+                    
+                    _previewMat.SetColor(BaseColor, b.Color);
+                    
+                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, _previewMat, gameObject.layer, _sceneView.camera);
                 }
                 
                 _previousPos = transform.position;
                 _sceneView.Repaint();
-                
                 yield return new WaitForSeconds(deltaTime);
+                _sceneView.Repaint();
                 timer -= deltaTime;
             }
 
             _editorBullets = null;
+            #if UNITY_EDITOR
+            playingEditorAnimation = false;
+            #endif
         }
 
         private void DuringSceneGui(SceneView sceneView)
         {
-            if (Selection.activeGameObject != gameObject || spawnSettings == null || bulletSettings == null || previewMat == null) return;
             if (_sceneView == null)
                 _sceneView = sceneView;
+
+            if (_previewMat == null && bulletSettings != null)
+            {
+                _previewMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+                
+                _previewMat.SetColor(BaseColor, bulletSettings.StartColor);
+                _previewMat.SetFloat(Cutoff, 0.5f);
+                _previewMat.SetFloat(AlphaClip, 1);
+                _previewMat.SetOverrideTag("RenderType", "TransparentCutout"); 
+                _previewMat.EnableKeyword("_ALPHATEST_ON");
+            }
+            _previewMat.SetTexture(BaseMap, bulletSettings.Material.mainTexture);
+            
+            if (Selection.activeGameObject != gameObject || spawnSettings == null || bulletSettings == null) return;
             if (_editorRnd == null)
                 _editorRnd = new Squirrel3();
 
@@ -660,26 +701,24 @@ namespace BulletFury
                         Vector3.one * size);
 
                     
-                    previewMat.SetColor(BaseColor, b.Color);
+                    _previewMat.SetColor(BaseColor, b.Color);
                     
-                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, previewMat, gameObject.layer, sceneView.camera);
+                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, _previewMat, gameObject.layer, sceneView.camera);
+                    
                     Handles.color = UnityEngine.Color.green;
                     Handles.DrawWireArc(finalPos, Vector3.forward, Vector3.up, 360,
-                        bulletSettings.ColliderSize * bulletSettings.Size);
+                        bulletSettings.ColliderSize * size);
                     Handles.color = UnityEngine.Color.white;
                 }
-
                 return;
             }
 
             
+            _previewMat.SetColor(BaseColor, bulletSettings.StartColor);
             spawnSettings.Spawn((point, dir) =>
             {
                 // for every point that the spawner gets
 
-                var color = bulletSettings.StartColor;
-                previewMat.SetColor(BaseColor, color);
-                previewMat.SetTexture(BaseMap, bulletSettings.Material.mainTexture);
                 // set up the rotation 
                 if (Plane == BulletPlane.XY)
                 {
@@ -690,7 +729,7 @@ namespace BulletFury
                     var mtx = Matrix4x4.TRS(finalPos, rot,
                         Vector3.one * bulletSettings.Size);
                     
-                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, previewMat, gameObject.layer, sceneView.camera);
+                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, _previewMat, gameObject.layer, sceneView.camera);
                     Handles.color = UnityEngine.Color.green;
                     Handles.DrawWireArc(finalPos, Vector3.forward, Vector3.up, 360, bulletSettings.ColliderSize * bulletSettings.Size);
                     Handles.color = UnityEngine.Color.white;
@@ -711,7 +750,7 @@ namespace BulletFury
                     
                     var mtx = Matrix4x4.TRS(finalPos, rotation,
                         Vector3.one * bulletSettings.Size);
-                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, previewMat, gameObject.layer, sceneView.camera);
+                    Graphics.DrawMesh(bulletSettings.Mesh, mtx, _previewMat, gameObject.layer, sceneView.camera);
                     //bulletSettings.Material.SetPass(0);
                     //Graphics.DrawMeshNow(bulletSettings.Mesh, mtx);
                     Handles.color = UnityEngine.Color.green;
@@ -721,6 +760,7 @@ namespace BulletFury
                     //positions.Add(pos);
                 }
             }, _editorRnd);
+            sceneView.Repaint();
         }
         #endif
         public static List<BulletManager> GetAllManagers()

@@ -12,6 +12,9 @@ namespace Confined
 
         public float DoNotTouch;
 
+        // Generalize DroneXWB reference later
+        [SerializeField] private DroneXWB droneScript;
+
         // Property for overall health access
         public float Health
         {
@@ -53,10 +56,10 @@ namespace Confined
             // Subtract from current health
             collider.GetComponent<EnemyHealth>().Health -= damage;
 
-            // If below 0, I don't know, fucking we'll do something, eh?
-            if (Health <= 0)
+            // Die if below 0
+            if (Health <= 0 && droneScript != null && droneScript.IsDying == false)
             {
-                Debug.Log("Umm, you're dead dude");
+                StartCoroutine(droneScript.PlayDeath());
             }
         }
     }

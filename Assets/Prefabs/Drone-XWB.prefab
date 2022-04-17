@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b3b583b5c6d4f4cab32fe763227ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBullets: 1023
+  maxBullets: 15
   drawPriority: 0
   bulletSettings: {fileID: 11400000, guid: 04e38620dc56a574ab143e3b7b668617, type: 2}
   spawnSettings: {fileID: 11400000, guid: deb31fb7b4e7e62429ef320bc34d0dbb, type: 2}
@@ -158,7 +158,7 @@ MonoBehaviour:
   maxActiveBullets: 0
   seed: 
   randomiseSeedOnAwake: 1
-  previewMat: {fileID: 2100000, guid: 9513ce959bf787142bac240698465864, type: 2}
+  playingEditorAnimation: 0
   OnBulletDied:
     m_PersistentCalls:
       m_Calls:
