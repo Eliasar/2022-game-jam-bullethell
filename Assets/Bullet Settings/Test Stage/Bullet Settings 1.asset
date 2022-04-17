@@ -20,12 +20,12 @@ MonoBehaviour:
   lifetime: 5
   speed: 4
   moveWithTransform: 0
-  damage: 1
+  damage: 10
   size: 0.25
   colliderSize: 1
   angularVelocity: 0
   startColor: {r: 1.4901961, g: 0, b: 1.4980392, a: 1}
-  useColorOverTime: 0
+  useColorOverTime: 1
   colorCurveUsage: 1
   colorCurveTime: 1
   colorOverTime:
@@ -85,7 +85,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useRotationForDirection: 1
-  useSizeOverTime: 0
+  useSizeOverTime: 1
   sizeCurveUsage: 1
   sizeCurveTime: 1
   sizeOverTime:

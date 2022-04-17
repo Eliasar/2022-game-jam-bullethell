@@ -23,4 +23,4 @@ MonoBehaviour:
   numPerSide: 1
   radius: 2
   arc: 360
-  isExpanded: 1
+  isExpanded: 0
