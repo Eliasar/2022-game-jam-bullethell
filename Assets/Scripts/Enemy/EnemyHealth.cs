@@ -1,16 +1,13 @@
 using BulletFury;
 using BulletFury.Data;
-using Ktyl.Util;
 using UnityEngine;
 
 namespace Confined
 {
     public class EnemyHealth : MonoBehaviour
     {
-        public SerialFloat health;
-        [SerializeField] private float localHealth;
-
-        public float DoNotTouch;
+        // public SerialFloat health;
+        [SerializeField] private float health;
 
         // Generalize DroneXWB reference later
         [SerializeField] private DroneXWB droneScript;
@@ -18,36 +15,11 @@ namespace Confined
         // Property for overall health access
         public float Health
         {
-            get
-            {
-                if (health?.Value != null)
-                {
-                    return health.Value;
-                }
-                else
-                {
-                    return localHealth;
-                }
-            }
-
-            set
-            {
-                if (health?.Value != null)
-                {
-                    health.Value = value;
-                }
-                else
-                {
-                    localHealth = value;
-                }
-            }
+            get => health;       
+            set => health = value;
         }
 
-        private void Update()
-        {
-            DoNotTouch = Health;
-        }
-
+        // Called from the BulletManager
         public void OnCollide(BulletContainer bullet, BulletCollider collider)
         {
             // Get the bullet damage
@@ -57,7 +29,7 @@ namespace Confined
             collider.GetComponent<EnemyHealth>().Health -= damage;
 
             // Die if below 0
-            if (Health <= 0 && droneScript != null && droneScript.IsDying == false)
+            if (Health <= 0 && droneScript != null && droneScript.State != DroneXWB.DroneState.Dying)
             {
                 StartCoroutine(droneScript.PlayDeath());
             }
