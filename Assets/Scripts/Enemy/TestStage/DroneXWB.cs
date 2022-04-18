@@ -1,50 +1,61 @@
 using BulletFury;
 using BulletFury.Data;
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Confined
 {
     public class DroneXWB : MonoBehaviour
     {
+        [Header("Entering")]
+        [SerializeField] private float EntrySpeed = 45.0f;
+        [SerializeField] private float EntryHoverTime = 1.5f;
+        [SerializeField] private BezierPath EntryPath;
+        private float entryTParam = 0.0f;
+
         [Header("Position")]
         [SerializeField] private float Speed = 15.0f;
         [SerializeField] private float HoverTime = 2.0f;
-        [SerializeField] private Vector3[] AttackPositions;
-        private int currentPositionIndex;
+        [SerializeField] private PathController PathController;
         private Vector3 targetPosition;
-        private bool IsHovering = false;
 
         [Header("Bullets")]
         [SerializeField] private BulletManager bulletManager = null;
         [SerializeField] private int MaxBullets = 5;
         [SerializeField] private Transform PlayerTransform = null;
         private int currentBulletIndex;
-        private bool CanFire = false;
 
         [Header("Death")]
         [SerializeField] private GameObject ExplosionPrefab = null;
         [SerializeField] private Mesh ExplosionMesh;
         [SerializeField] private Material ExplosionMaterial;
-        public bool IsDying = false;
+        [SerializeField] private int NumberOfExplosions = 30;
 
-        // private void Awake()
-        // {
-        //     Application.targetFrameRate = 120;
-        // }
+        // States
+        public enum DroneState
+        {
+            Entering,
+            Hovering,
+            Shooting,
+            Moving,
+            Dying
+        }
+        public DroneState State;
 
         private void Start()
         {
-            currentPositionIndex = 0;
             currentBulletIndex = 0;
-            targetPosition = AttackPositions[currentPositionIndex];
+            entryTParam = 0.0f;
+            
+            PathController = GetComponentInChildren<PathController>();
+            targetPosition = PathController.GetFirstPoint();
+            State = DroneState.Entering;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (bulletManager == null || IsDying)
+            if (bulletManager == null || State == DroneState.Dying)
             {
                 return;
             }
@@ -52,61 +63,76 @@ namespace Confined
             // Look at the player
             transform.up = PlayerTransform.position - transform.position;
 
-            // Once it gets close to its target position, hover for a time, then set CanFire
-            // Move, hover, or fire, those are your two choices
-            if (!IsHovering && Vector3.Distance(transform.position, targetPosition) < 0.001f)
+            switch (State)
             {
-                StartCoroutine(OnHover());
-            }
-            else if (CanFire)
-            {
-                bulletManager.Spawn(transform.position, bulletManager.Plane == BulletPlane.XY ? transform.up : transform.forward);
-            }
-            else
-            {
-                // Move to the next target position
-                var step = Speed * Time.smoothDeltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+                case DroneState.Entering:
+                    // The target will be p3 of the Bezier curve
+                    if (entryTParam >= 1)
+                    {
+                        StartCoroutine(OnHover(EntryHoverTime));
+                    }
+                    else
+                    {
+                        entryTParam += EntrySpeed * Time.smoothDeltaTime;
+                        transform.position = EntryPath.GetPointOnCurve(entryTParam);
+                    }
+
+                    break;
+                case DroneState.Moving:
+                    if (Vector3.Distance(transform.position, targetPosition) < 0.001f)
+                    {
+                        StartCoroutine(OnHover(HoverTime));
+                    }
+                    else
+                    {
+                        var step = Speed * Time.smoothDeltaTime;
+                        transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+                    }
+
+                    break;
+                case DroneState.Hovering:
+                    break;
+                case DroneState.Shooting:
+                    bulletManager.Spawn(transform.position, bulletManager.Plane == BulletPlane.XY ? transform.up : transform.forward);
+                    break;
+                case DroneState.Dying:
+                default:
+                    break;
             }
         }
 
-        private IEnumerator OnHover()
+        private IEnumerator OnHover(float hoverTime)
         {
-            IsHovering = true;
+            State = DroneState.Hovering;
             var timer = 0.0f;
 
-            while (timer < HoverTime)
+            while (timer < hoverTime)
             {
                 timer += Time.smoothDeltaTime;
-
                 yield return null;
             }
 
-            currentPositionIndex = (currentPositionIndex + 1) % AttackPositions.Length;
-            targetPosition = AttackPositions[currentPositionIndex];
-
-            IsHovering = false;
-            CanFire = true;
+            targetPosition = PathController.GetNextPoint();
+            State = DroneState.Shooting;
         }
 
         public void OnBulletSpawned(int something, BulletContainer bullet)
         {
             currentBulletIndex++;
 
-            if (currentBulletIndex > MaxBullets)
+            if (currentBulletIndex >= MaxBullets)
             {
-                CanFire = false;
                 currentBulletIndex = 0;
+                State = DroneState.Moving;
             }
         }
 
         public IEnumerator PlayDeath()
         {
-            IsDying = true;
-            int numberOfExplosions = 30;
+            State = DroneState.Dying;
 
             // Run IEnumerator to spawn explosions
-            for (int i = 0; i < numberOfExplosions; i++)
+            for (int i = 0; i < NumberOfExplosions; i++)
             {
                 StartCoroutine(AsyncPlayDeath());
                 yield return new WaitForSeconds(0.025f);

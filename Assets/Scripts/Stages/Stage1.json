@@ -1,0 +1,109 @@
+{
+  "levelName": "1",
+  "actions": [
+    {
+      "type": "spawn",
+      "group": 1,
+      "spawns": [
+        {
+          "prefab": "Drone-XWB",
+          "entryDelay": 0.0,
+          "entrySpeed": 0.8,
+          "entryHoverTime": 1.5,
+          "entryPath": {
+            "p0x": 4.2,
+            "p0y": 21.8,
+            "p1x": 3.0,
+            "p1y": 6.1,
+            "p2x": 3.4,
+            "p2y": -3.3,
+            "p3x": 5.0,
+            "p3y": 7.5
+          },
+          "patrolPoints": [
+            { "x": 5, "y": 7.5 },
+            { "x": 7.5, "y": -1 },
+            { "x": 3.4, "y": -8.6 }
+          ]
+        },
+        {
+          "prefab": "Drone-XWB",
+          "entryDelay": 0.3,
+          "entrySpeed": 0.8,
+          "entryHoverTime": 1.2,
+          "entryPath": {
+            "p0x": 8.2,
+            "p0y": 21.8,
+            "p1x": 7.0,
+            "p1y": 6.1,
+            "p2x": 7.4,
+            "p2y": -3.3,
+            "p3x": 9.0,
+            "p3y": 7.5
+          },
+          "patrolPoints": [
+            { "x": 9, "y": 7.5 },
+            { "x": 11.5, "y": -1 },
+            { "x": 7.4, "y": -8.6 }
+          ]
+        },
+        {
+          "prefab": "Drone-XWB",
+          "entryDelay": 0.6,
+          "entrySpeed": 0.8,
+          "entryHoverTime": 0.9,
+          "entryPath": {
+            "p0x": 12.2,
+            "p0y": 21.8,
+            "p1x": 11.0,
+            "p1y": 6.1,
+            "p2x": 11.4,
+            "p2y": -3.3,
+            "p3x": 13.0,
+            "p3y": 7.5
+          },
+          "patrolPoints": [
+            { "x": 13, "y": 7.5 },
+            { "x": 15.5, "y": -1 },
+            { "x": 11.4, "y": -8.6 }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "waitForDestroy",
+      "group": 1
+    },
+    {
+      "type": "delay",
+      "delayTime": 5.0
+    },
+    {
+      "type": "spawn",
+      "group": 2,
+      "spawns": [
+        {
+          "prefab": "Drone-XWB",
+          "entryDelay": 0.0,
+          "entrySpeed": 0.8,
+          "entryHoverTime": 1.5,
+          "entryPath": {
+            "p0x": -6.2,
+            "p0y": 21.8,
+            "p1x": -7.0,
+            "p1y": 6.1,
+            "p2x": -7.4,
+            "p2y": -3.3,
+            "p3x": -5.0,
+            "p3y": 7.5
+          },
+          "patrolPoints": [
+            { "x": -5, "y": 7.5 },
+            { "x": -3.5, "y": -1 },
+            { "x": -7.4, "y": -8.6 }
+          ]
+        }
+      ]
+    }
+  ]
+}

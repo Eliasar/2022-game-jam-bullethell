@@ -21,7 +21,7 @@ namespace Confined
         [SerializeField] private float ShieldSpeed = 1f;
 
         // Turret properties
-        [SerializeField] private List<BulletManager> Turrets;
+        private List<BulletManager> Turrets;
 
         private void Awake()
         {
@@ -49,7 +49,7 @@ namespace Confined
             // Shield and Turret rotation
             var rotatorDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(RotationObject.transform.position);
             var rotatorAngle = Mathf.Atan2(rotatorDirection.y, rotatorDirection.x) * Mathf.Rad2Deg;
-            RotationObject.rotation = Quaternion.AngleAxis(rotatorAngle, Vector3.forward);
+            RotationObject.rotation = Quaternion.AngleAxis(rotatorAngle + 90, Vector3.forward);
 
             // Turret Firing
             if (Input.GetMouseButton(0))
