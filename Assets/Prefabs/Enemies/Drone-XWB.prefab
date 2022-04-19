@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae8a7a0bb596fc46936e0dc7ef16fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DegreesPerSecond: 360
+  RotationsPerSecond: 1
 --- !u!1 &3183678144630020539
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae8a7a0bb596fc46936e0dc7ef16fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DegreesPerSecond: 360
+  RotationsPerSecond: 1
 --- !u!1 &6327426266149772500
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
   Speed: 25
   HoverTime: 0.7
   PathController: {fileID: 1707754138221009011}
-  bulletManager: {fileID: 0}
+  bulletManager: {fileID: 5626946543015926512}
   MaxBullets: 5
   PlayerTransform: {fileID: 0}
   ExplosionPrefab: {fileID: 5367481715254652580, guid: 88886fc02817cd94fa408ba09d5fa7fe, type: 3}

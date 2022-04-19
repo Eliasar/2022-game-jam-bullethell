@@ -257,6 +257,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &225160201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 225160203}
+  - component: {fileID: 225160202}
+  m_Layer: 0
+  m_Name: Scene Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &225160202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225160201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40da7c03134613247836fabb59612008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stage1Asset: {fileID: 4900000, guid: 9402289e3c7d7024092c48e4f4c9d364, type: 3}
+  Stage2Asset: {fileID: 0}
+  Stage3Asset: {fileID: 0}
+  DroneXwbPrefab: {fileID: 8895709540427505140, guid: e97f0f68f968ce947a77bcb17f816d45, type: 3}
+--- !u!4 &225160203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225160201}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &267277849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,7 +1063,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40da7c03134613247836fabb59612008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StagePath: Assets/Scripts/Stages/Stage1.json
+  Stage1Asset: {fileID: 0}
+  Stage2Asset: {fileID: 0}
+  Stage3Asset: {fileID: 0}
+  DroneXwbPrefab: {fileID: 0}
 --- !u!4 &934281001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3902413565582158711, guid: d903b83234ba1644688cd72abea8069c, type: 3}

@@ -10,6 +10,7 @@
           "entryDelay": 0.0,
           "entrySpeed": 0.8,
           "entryHoverTime": 1.5,
+          "startingPosition": { "x": 4, "y": 21.7 },
           "entryPath": {
             "p0x": 4.2,
             "p0y": 21.8,
@@ -31,6 +32,7 @@
           "entryDelay": 0.3,
           "entrySpeed": 0.8,
           "entryHoverTime": 1.2,
+          "startingPosition": { "x": 8, "y": 21.7 },
           "entryPath": {
             "p0x": 8.2,
             "p0y": 21.8,
@@ -52,6 +54,7 @@
           "entryDelay": 0.6,
           "entrySpeed": 0.8,
           "entryHoverTime": 0.9,
+          "startingPosition": { "x": 12, "y": 21.7 },
           "entryPath": {
             "p0x": 12.2,
             "p0y": 21.8,
@@ -87,6 +90,7 @@
           "entryDelay": 0.0,
           "entrySpeed": 0.8,
           "entryHoverTime": 1.5,
+          "startingPosition": { "x": -6.4, "y": 21.7 },
           "entryPath": {
             "p0x": -6.2,
             "p0y": 21.8,
