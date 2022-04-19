@@ -1,6 +1,6 @@
 using System;
 
-namespace Confined.Json2
+namespace Confined.Stages.Json2
 {
     [Serializable]
     public class EntryPath
@@ -29,6 +29,7 @@ namespace Confined.Json2
         public float entryDelay;
         public float entrySpeed;
         public float entryHoverTime;
+        public PatrolPoint startingPosition;
         public EntryPath entryPath;
         public PatrolPoint[] patrolPoints;
     }
