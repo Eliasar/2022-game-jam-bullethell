@@ -24,7 +24,7 @@ namespace Confined
             return transform.GetChild(currentIndex).transform.localPosition;
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             if (!DrawPaths)
             {

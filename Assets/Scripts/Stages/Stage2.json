@@ -1,0 +1,29 @@
+,
+    {
+      "type": "spawn",
+      "group": 2,
+      "spawns": [
+        {
+          "prefab": "Drone-XWB",
+          "entryDelay": 0.0,
+          "entrySpeed": 0.8,
+          "entryHoverTime": 1.5,
+          "startingPosition": { "x": -6.4, "y": 21.7 },
+          "entryPath": {
+            "p0x": -6.2,
+            "p0y": 21.8,
+            "p1x": -7.0,
+            "p1y": 6.1,
+            "p2x": -7.4,
+            "p2y": -3.3,
+            "p3x": -5.0,
+            "p3y": 7.5
+          },
+          "patrolPoints": [
+            { "x": -5, "y": 7.5 },
+            { "x": -3.5, "y": -1 },
+            { "x": -7.4, "y": -8.6 }
+          ]
+        }
+      ]
+    }

@@ -1,5 +1,10 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using BulletFury;
+using Ktyl.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Confined.Stages.Json2
 {
@@ -11,16 +16,32 @@ namespace Confined.Stages.Json2
 
         private Confined.Stages.Json2.Root LevelRoot;
 
+        // Handle when all spawned game objects in a group have finished entering the scene
+        private Dictionary<int, int> SpawnedGameObjects;
+        public UnityEvent GroupReadyToMoveEvent;
+
+        // Handle when all spawned game objects in a group have died
+        private Dictionary<int, int> EnemiesAliveByGroup;
+        // private bool WaitForDestroyComplete = false;
+        [SerializeField] private SerialFloat ScoreSerialFloat;
+
+        [Header("Explosions")]
+        [SerializeField] private BulletExplodeOnHit ExplodeScript;
+
         // Enemy prefabs - I know this should be done with addressables, but game jam.
         [Header("Enemies")]
         [SerializeField] private GameObject DroneXwbPrefab;
 
         private void Start()
         {
+            SpawnedGameObjects = new Dictionary<int, int>();
+            GroupReadyToMoveEvent = new UnityEvent();
+
+            EnemiesAliveByGroup = new Dictionary<int, int>();
+
             Debug.Log($"Loading level 1...");
             LevelRoot = JsonUtility.FromJson<Confined.Stages.Json2.Root>(Stage1Asset.text);
 
-            // Debug.Log($"root: {root}");
             Debug.Log($"Loaded level [{LevelRoot.levelName}]");
 
             // Play the actions, coroutine, duh
@@ -45,23 +66,26 @@ namespace Confined.Stages.Json2
                             switch (spawns[j].prefab)
                             {
                                 case "Drone-XWB":
-                                    // var drone = GameObject.Instantiate(DroneXwb);
-                                    StartCoroutine(SpawnDroneXwb(spawns[j]));
+                                    StartCoroutine(SpawnDroneXwb(spawns[j], action.group));
                                     break;
                                 default:
                                     break;
                             }
-
-                            yield return null;
                         }
 
-                        // Instantiate on the timer
-                        // Instantiate for now, pool objects later
+                        // WaitForDestroy action is running before the spawning has actually finished
+                        yield return new WaitUntil(() => EnemiesAliveByGroup?.ContainsKey(action.group) == true);
 
                         break;
                     case "waitForDestroy":
+                        Debug.Log($"waitForDestroy for group [{action.group}]...");
+                        yield return new WaitUntil(() => EnemiesAliveByGroup?.ContainsKey(action.group) == false);
+                        Debug.Log($"waitForDestroy for group [{action.group}] complete");
                         break;
                     case "delay":
+                        Debug.Log("Delay action started...");
+                        yield return new WaitForSeconds(action.delayTime);
+                        Debug.Log("Delay action complete");
                         break;
                     default:
                         break;
@@ -71,8 +95,18 @@ namespace Confined.Stages.Json2
             }
         }
 
-        private IEnumerator SpawnDroneXwb(Spawn spawnInfo)
+        private IEnumerator SpawnDroneXwb(Spawn spawnInfo, int group)
         {
+            Debug.Log($"SpawnDroneXwb Group [{group}] start... {Time.time}");
+
+            // Delay spawn
+            if (spawnInfo.entryDelay > 0.001f)
+            {
+                Debug.Log($"SpawnDroneXwb start delay... {Time.time}");
+                yield return new WaitForSeconds(spawnInfo.entryDelay);
+                Debug.Log($"SpawnDroneXwb delay end... {Time.time}");
+            }
+
             // Setup
             var startPosition = new Vector3(spawnInfo.startingPosition.x, spawnInfo.startingPosition.y, 0);
             var drone = GameObject.Instantiate(DroneXwbPrefab, startPosition, Quaternion.identity);
@@ -81,16 +115,16 @@ namespace Confined.Stages.Json2
             var entryPath = drone.transform.Find("Entry Path");
 
             var p0 = entryPath.transform.Find("p0");
-            p0.transform.position = new Vector3(spawnInfo.entryPath.p0x, spawnInfo.entryPath.p0y, 0);
+            p0.transform.localPosition = new Vector3(spawnInfo.entryPath.p0x, spawnInfo.entryPath.p0y, 0);
 
             var p1 = entryPath.transform.Find("p1");
-            p1.transform.position = new Vector3(spawnInfo.entryPath.p1x, spawnInfo.entryPath.p1y, 0);
+            p1.transform.localPosition = new Vector3(spawnInfo.entryPath.p1x, spawnInfo.entryPath.p1y, 0);
 
             var p2 = entryPath.transform.Find("p2");
-            p2.transform.position = new Vector3(spawnInfo.entryPath.p2x, spawnInfo.entryPath.p2y, 0);
+            p2.transform.localPosition = new Vector3(spawnInfo.entryPath.p2x, spawnInfo.entryPath.p2y, 0);
 
             var p3 = entryPath.transform.Find("p3");
-            p3.transform.position = new Vector3(spawnInfo.entryPath.p3x, spawnInfo.entryPath.p3y, 0);
+            p3.transform.localPosition = new Vector3(spawnInfo.entryPath.p3x, spawnInfo.entryPath.p3y, 0);
 
             // Patrol path
             var pathController = drone.transform.Find("Path Controller");
@@ -99,13 +133,90 @@ namespace Confined.Stages.Json2
             {
                 var point = pathController.GetChild(i);
                 var patrolPoint = spawnInfo.patrolPoints[i];
-                point.transform.position = new Vector3(patrolPoint.x, patrolPoint.y, 0);
+                point.transform.localPosition = new Vector3(patrolPoint.x, patrolPoint.y, 0);
             }
 
-            // Delay as indicated
-            yield return new WaitForSeconds(spawnInfo.entryDelay);
+            var component = drone.GetComponent<DroneXwb>();
+
+            // Set the group
+            component.SetGroup(group);
+
+            // Set the entry hover time
+            component.SetEntryHoverTime(spawnInfo.entryHoverTime);
+
+            // Subscribe to entry complete event
+            component.EntryCompleteEvent.AddListener(HandleGroupEntryComplete);
+
+            // Add a counter to the appropriate group
+            if (SpawnedGameObjects?.ContainsKey(group) == true)
+            {
+                SpawnedGameObjects[group] += 1;
+            }
+            else
+            {
+                SpawnedGameObjects.Add(group, 1);
+            }
+
+            // Subscribe to group ready to move event
+            GroupReadyToMoveEvent.AddListener(() => component.State = DroneXwb.DroneState.Shooting);
+
+            // Explosion on hit - Bullet Manager OnBulletDied
+            drone.GetComponent<BulletManager>().OnBulletDiedEvent += ExplodeScript.OnBulletDie;
+
+            // Subscribe to death event
+            component.DeathEvent.AddListener(HandleGroupDeathComplete);
+            
+            if (EnemiesAliveByGroup?.ContainsKey(group) == false)
+            {
+                EnemiesAliveByGroup.Add(group, 1);
+            }
+            else
+            {
+                EnemiesAliveByGroup[group] += 1;
+            }
+
+            Debug.Log($"SpawnDroneXwb Group [{group}] end");
 
             yield return null;
+        }
+
+        private void HandleGroupEntryComplete(int group)
+        {
+            if (SpawnedGameObjects?[group] == null)
+            {
+                Debug.LogException(new Exception($"No spawned group with group number {group}."));
+            }
+
+            SpawnedGameObjects[group] -= 1;
+
+            if (SpawnedGameObjects[group] == 0)
+            {
+                Debug.Log($"Group [{group}] on the move!");
+                GroupReadyToMoveEvent?.Invoke();
+            }
+        }
+
+        private void HandleGroupDeathComplete(int group, int pointValue)
+        {
+            // for the wait for destroy action
+            if (EnemiesAliveByGroup?.ContainsKey(group) == true)
+            {
+                Debug.Log($"Bogey down from group [{group}], worth [{pointValue}]!");
+
+                // add to the score
+                ScoreSerialFloat.Value += pointValue;
+
+                if (EnemiesAliveByGroup?[group] != 0)
+                {
+                    EnemiesAliveByGroup[group] -= 1;
+                }
+
+                if (EnemiesAliveByGroup?[group] == 0)
+                {
+                    Debug.Log($"All bogeys down from group [{group}]");
+                    EnemiesAliveByGroup.Remove(group);
+                }
+            }
         }
     }
 }

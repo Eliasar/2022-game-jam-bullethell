@@ -10,7 +10,7 @@ namespace Confined
         [SerializeField] private float health;
 
         // Generalize DroneXWB reference later
-        [SerializeField] private DroneXWB droneScript;
+        [SerializeField] private DroneXwb droneScript;
 
         // Property for overall health access
         public float Health
@@ -22,14 +22,19 @@ namespace Confined
         // Called from the BulletManager
         public void OnCollide(BulletContainer bullet, BulletCollider collider)
         {
-            // Get the bullet damage
-            float damage = bullet.Damage;
+            if (Health > 0)
+            {
+                // Get the bullet damage
+                float damage = bullet.Damage;
 
-            // Subtract from current health
-            collider.GetComponent<EnemyHealth>().Health -= damage;
+                // Subtract from current health
+                collider.GetComponent<EnemyHealth>().Health -= damage;
+
+                Debug.Log("I was dealt damage!");
+            }
 
             // Die if below 0
-            if (Health <= 0 && droneScript != null && droneScript.State != DroneXWB.DroneState.Dying)
+            if (Health <= 0 && droneScript?.State != DroneXwb.DroneState.Dying)
             {
                 StartCoroutine(droneScript.PlayDeath());
             }

@@ -15,11 +15,16 @@ namespace Confined
 
         public void OnBulletDie(int idx, BulletContainer bullet, bool endOfLife)
         {
+            OnBulletDie(bullet, endOfLife);
+        }
+
+        public void OnBulletDie(BulletContainer bullet, bool endOfLife)
+        {
             if (endOfLife)
             {
                 return;
             }
-            
+
             StartCoroutine(PlayExplosion(bullet.Position));
         }
 

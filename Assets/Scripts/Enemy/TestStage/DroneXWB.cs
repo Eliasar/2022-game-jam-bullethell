@@ -2,16 +2,20 @@ using BulletFury;
 using BulletFury.Data;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Confined
 {
-    public class DroneXWB : MonoBehaviour
+    public class DroneXwb : MonoBehaviour
     {
         [Header("Entering")]
         [SerializeField] private float EntrySpeed = 45.0f;
         [SerializeField] private float EntryHoverTime = 1.5f;
         [SerializeField] private BezierPath EntryPath;
         private float entryTParam = 0.0f;
+        private bool IsEntryComplete = false;
+
+        public UnityEvent<int> EntryCompleteEvent;
 
         [Header("Position")]
         [SerializeField] private float Speed = 15.0f;
@@ -30,6 +34,13 @@ namespace Confined
         [SerializeField] private Mesh ExplosionMesh;
         [SerializeField] private Material ExplosionMaterial;
         [SerializeField] private int NumberOfExplosions = 30;
+        [SerializeField] private int PointValue = 100;
+
+        public UnityEvent<int, int> DeathEvent;
+        private bool CanDestroy = false;
+
+        // Meta
+        private int Group = 0;
 
         // States
         public enum DroneState
@@ -41,6 +52,16 @@ namespace Confined
             Dying
         }
         public DroneState State;
+        
+        public void SetGroup(int group)
+        {
+            Group = group;
+        }
+
+        public void SetEntryHoverTime(float time)
+        {
+            EntryHoverTime = time;
+        }
 
         private void Start()
         {
@@ -49,6 +70,7 @@ namespace Confined
             
             PathController = GetComponentInChildren<PathController>();
             targetPosition = PathController.GetFirstPoint();
+            PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             State = DroneState.Entering;
         }
 
@@ -66,7 +88,7 @@ namespace Confined
             switch (State)
             {
                 case DroneState.Entering:
-                    // The target will be p3 of the Bezier curve
+                    // The final target position will be p3 of the Bezier curve
                     if (entryTParam >= 1)
                     {
                         StartCoroutine(OnHover(EntryHoverTime));
@@ -112,30 +134,46 @@ namespace Confined
                 yield return null;
             }
 
+            // If this drone is part of a group, invoke entry complete
+            if (!IsEntryComplete)
+            {
+                EntryCompleteEvent?.Invoke(Group);
+                IsEntryComplete = true;
+            }
+            else
+            {
+                State = DroneState.Shooting;
+            }
+
             targetPosition = PathController.GetNextPoint();
-            State = DroneState.Shooting;
         }
 
+        // Called from Bullet Manager OnBulletSpawned event
         public void OnBulletSpawned(int something, BulletContainer bullet)
         {
             currentBulletIndex++;
 
-            if (currentBulletIndex >= MaxBullets)
+            if (currentBulletIndex >= MaxBullets - 1)
             {
                 currentBulletIndex = 0;
                 State = DroneState.Moving;
             }
         }
 
+        // Called from EnemyHealth
         public IEnumerator PlayDeath()
         {
             State = DroneState.Dying;
+
+            // Broadcast that death has happened
+            DeathEvent?.Invoke(Group, PointValue);
 
             // Run IEnumerator to spawn explosions
             for (int i = 0; i < NumberOfExplosions; i++)
             {
                 StartCoroutine(AsyncPlayDeath());
-                yield return new WaitForSeconds(0.025f);
+                // yield return new WaitForSeconds(0.025f);
+                yield return new WaitUntil(() => CanDestroy);
             }
 
             // Destroy this object
@@ -177,6 +215,8 @@ namespace Confined
 
                 yield return null;
             }
+
+            CanDestroy = true;
         }
     }
 }
