@@ -17,29 +17,29 @@ MonoBehaviour:
   plane: 0
   waitToStart: 0
   timeToPlayWhileWaiting: 0
-  lifetime: 5
-  speed: 25
+  lifetime: 4
+  speed: 35
   moveWithTransform: 0
   damage: 1
   size: 0.5
   colliderSize: 0.5
   angularVelocity: 0
-  startColor: {r: 0.09042052, g: 0, b: 2.8392162, a: 1}
+  startColor: {r: 0.21960784, g: 0, b: 5.992157, a: 1}
   useColorOverTime: 1
   colorCurveUsage: 1
-  colorCurveTime: 0.5
+  colorCurveTime: 0.2
   colorOverTime:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 0, g: 0.08675146, b: 1, a: 0.78431374}
-    key2: {r: 0, g: 0.08627451, b: 1, a: 0.78431374}
-    key3: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    key1: {r: 2.9960785, g: 2.9960785, b: 2.9960785, a: 0.78431374}
+    key2: {r: 2.9960785, g: 2.9960785, b: 2.9960785, a: 0.78431374}
+    key3: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 1}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 15227
+    ctime1: 15035
     ctime2: 50308
     ctime3: 65535
     ctime4: 0
@@ -114,28 +114,28 @@ MonoBehaviour:
     m_RotationOrder: 4
   useVelocityOverTime: 0
   velocitySpace: 0
-  scaleWithSpeed: 0
+  scaleWithSpeed: 1
   velocityCurveUsage: 0
   velocityCurveTime: 0
-  velocityScaleInDirection: {x: 1, y: 1, z: 1}
+  velocityScaleInDirection: {x: 0, y: 0.4, z: 0}
   velocityOverTimeX:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -147,21 +147,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: -1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -171,19 +171,19 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -270,4 +270,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  isExpanded: 0
+  isExpanded: 1

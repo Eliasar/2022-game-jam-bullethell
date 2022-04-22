@@ -511,9 +511,9 @@ GameObject:
   m_Component:
   - component: {fileID: 741993969271230533}
   - component: {fileID: 1708712486171835468}
-  - component: {fileID: 4831374073674903394}
-  - component: {fileID: 490513198}
   - component: {fileID: 5626946543015926512}
+  - component: {fileID: 490513198}
+  - component: {fileID: 4831374073674903394}
   m_Layer: 7
   m_Name: Drone-XWB
   m_TagString: Untagged
@@ -566,59 +566,13 @@ MonoBehaviour:
   ExplosionMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   ExplosionMaterial: {fileID: 2100000, guid: 4336483410704b64c8d9ae1e1135af2e, type: 2}
   NumberOfExplosions: 30
-  State: 0
---- !u!114 &4831374073674903394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8895709540427505140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d72e17c8a8bd46c409339b48083721d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 20
-  droneScript: {fileID: 1708712486171835468}
---- !u!114 &490513198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8895709540427505140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9add1c9d0cf8e4cb28a0121845c457c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletLayersToBeHitBy:
-    serializedVersion: 2
-    m_Bits: 64
-  shape: 1
-  radius: 0.5
-  size: {x: 2.54, y: 1.18, z: 1}
-  destroyBullet: 1
-  center: {x: 0, y: -0.06, z: 0}
-  pointA: {x: 0, y: 0, z: 0}
-  pointB: {x: 0, y: 0, z: 0}
-  pointC: {x: 0, y: 0, z: 0}
-  OnCollide:
+  PointValue: 100
+  DeathEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4831374073674903394}
-        m_TargetAssemblyTypeName: Confined.EnemyHealth, Assembly-CSharp
-        m_MethodName: OnCollide
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  ActiveDeathAnimations: 0
+  Group: 0
+  State: 0
 --- !u!114 &5626946543015926512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,6 +618,58 @@ MonoBehaviour:
   OnWeaponFired:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &490513198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8895709540427505140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9add1c9d0cf8e4cb28a0121845c457c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletLayersToBeHitBy:
+    serializedVersion: 2
+    m_Bits: 64
+  shape: 1
+  radius: 0.5
+  size: {x: 2.54, y: 1.18, z: 1}
+  destroyBullet: 1
+  center: {x: 0, y: -0.06, z: 0}
+  pointA: {x: 0, y: 0, z: 0}
+  pointB: {x: 0, y: 0, z: 0}
+  pointC: {x: 0, y: 0, z: 0}
+  OnCollide:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4831374073674903394}
+        m_TargetAssemblyTypeName: Confined.EnemyHealth, Assembly-CSharp
+        m_MethodName: OnCollide
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4831374073674903394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8895709540427505140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72e17c8a8bd46c409339b48083721d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 1
+  droneScript: {fileID: 1708712486171835468}
 --- !u!1001 &3718341133541235087
 PrefabInstance:
   m_ObjectHideFlags: 0

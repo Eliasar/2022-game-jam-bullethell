@@ -29,6 +29,7 @@ namespace Confined.Stages.Json2
         public float entryDelay;
         public float entrySpeed;
         public float entryHoverTime;
+        public float hoverTime;
         public PatrolPoint startingPosition;
         public EntryPath entryPath;
         public PatrolPoint[] patrolPoints;

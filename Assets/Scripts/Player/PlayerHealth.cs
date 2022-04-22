@@ -11,9 +11,6 @@ namespace Confined
 
         public void OnCollide(BulletContainer bullet, BulletCollider collider)
         {
-            // Get the bullet damage
-            // float damage = bullet.Damage;
-
             // Subtract from current health
             health.Value -= bullet.Damage;
 
