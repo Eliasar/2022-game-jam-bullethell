@@ -15,7 +15,7 @@ namespace Confined
         // Property for overall health access
         public float Health
         {
-            get => health;       
+            get => health;
             set => health = value;
         }
 
@@ -24,19 +24,15 @@ namespace Confined
         {
             if (Health > 0)
             {
-                // Get the bullet damage
-                float damage = bullet.Damage;
-
                 // Subtract from current health
-                collider.GetComponent<EnemyHealth>().Health -= damage;
-
-                Debug.Log("I was dealt damage!");
+                Health -= bullet.Damage;
             }
 
             // Die if below 0
             if (Health <= 0 && droneScript?.State != DroneXwb.DroneState.Dying)
             {
                 StartCoroutine(droneScript.PlayDeath());
+                GetComponent<BulletCollider>().enabled = false;
             }
         }
     }

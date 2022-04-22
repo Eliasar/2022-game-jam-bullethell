@@ -37,10 +37,11 @@ namespace Confined
         [SerializeField] private int PointValue = 100;
 
         public UnityEvent<int, int> DeathEvent;
-        private bool CanDestroy = false;
+        public int ActiveDeathAnimations;
+        private bool CanDestroy => ActiveDeathAnimations == 0 && State == DroneState.Dying;
 
         // Meta
-        private int Group = 0;
+        public int Group = 0;
 
         // States
         public enum DroneState
@@ -61,6 +62,11 @@ namespace Confined
         public void SetEntryHoverTime(float time)
         {
             EntryHoverTime = time;
+        }
+
+        public void SetHoverTime(float time)
+        {
+            HoverTime = time;
         }
 
         private void Start()
@@ -91,7 +97,7 @@ namespace Confined
                     // The final target position will be p3 of the Bezier curve
                     if (entryTParam >= 1)
                     {
-                        StartCoroutine(OnHover(EntryHoverTime));
+                        StartCoroutine(OnEntryHover(EntryHoverTime));
                     }
                     else
                     {
@@ -123,6 +129,20 @@ namespace Confined
             }
         }
 
+        private IEnumerator OnEntryHover(float hoverTime)
+        {
+            var timer = 0.0f;
+
+            while (timer < hoverTime)
+            {
+                timer += Time.smoothDeltaTime;
+                yield return null;
+            }
+
+            EntryCompleteEvent?.Invoke(Group);
+            IsEntryComplete = true;
+        }
+
         private IEnumerator OnHover(float hoverTime)
         {
             State = DroneState.Hovering;
@@ -134,18 +154,25 @@ namespace Confined
                 yield return null;
             }
 
-            // If this drone is part of a group, invoke entry complete
-            if (!IsEntryComplete)
-            {
-                EntryCompleteEvent?.Invoke(Group);
-                IsEntryComplete = true;
-            }
-            else
-            {
-                State = DroneState.Shooting;
-            }
+            State = DroneState.Shooting;
 
             targetPosition = PathController.GetNextPoint();
+        }
+
+        // Called from Scene Manager GroupEntryCompleted invocation
+        public void HandleGroupEntryComplete(int group)
+        {
+            if (State == DroneState.Dying)
+            {
+                Debug.Log("Drone is dying. Ignoring HandleGroupEntryComplete invocation");
+                return;
+            }
+            else if (Group != group)
+            {
+                return;
+            }
+
+            State = DroneState.Shooting;
         }
 
         // Called from Bullet Manager OnBulletSpawned event
@@ -165,6 +192,8 @@ namespace Confined
         {
             State = DroneState.Dying;
 
+            StopAllCoroutines();
+
             // Broadcast that death has happened
             DeathEvent?.Invoke(Group, PointValue);
 
@@ -172,9 +201,10 @@ namespace Confined
             for (int i = 0; i < NumberOfExplosions; i++)
             {
                 StartCoroutine(AsyncPlayDeath());
-                // yield return new WaitForSeconds(0.025f);
-                yield return new WaitUntil(() => CanDestroy);
+                yield return new WaitForSeconds(0.05f);
             }
+            
+            yield return new WaitUntil(() => CanDestroy);
 
             // Destroy this object
             GameObject.Destroy(gameObject);
@@ -182,6 +212,8 @@ namespace Confined
 
         private IEnumerator AsyncPlayDeath()
         {
+            ActiveDeathAnimations++;
+
             Vector3 scaleMin = Vector3.one;
             Vector3 scaleMax = Vector3.one;
             float minRandomRange = 0.25f;
@@ -216,7 +248,7 @@ namespace Confined
                 yield return null;
             }
 
-            CanDestroy = true;
+            ActiveDeathAnimations--;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Confined.Stages.Json2
 
         // Handle when all spawned game objects in a group have finished entering the scene
         private Dictionary<int, int> SpawnedGameObjects;
-        public UnityEvent GroupReadyToMoveEvent;
+        public UnityEvent<int> GroupReadyToMoveEvent;
 
         // Handle when all spawned game objects in a group have died
         private Dictionary<int, int> EnemiesAliveByGroup;
@@ -35,7 +35,7 @@ namespace Confined.Stages.Json2
         private void Start()
         {
             SpawnedGameObjects = new Dictionary<int, int>();
-            GroupReadyToMoveEvent = new UnityEvent();
+            GroupReadyToMoveEvent = new UnityEvent<int>();
 
             EnemiesAliveByGroup = new Dictionary<int, int>();
 
@@ -97,14 +97,10 @@ namespace Confined.Stages.Json2
 
         private IEnumerator SpawnDroneXwb(Spawn spawnInfo, int group)
         {
-            Debug.Log($"SpawnDroneXwb Group [{group}] start... {Time.time}");
-
             // Delay spawn
             if (spawnInfo.entryDelay > 0.001f)
             {
-                Debug.Log($"SpawnDroneXwb start delay... {Time.time}");
                 yield return new WaitForSeconds(spawnInfo.entryDelay);
-                Debug.Log($"SpawnDroneXwb delay end... {Time.time}");
             }
 
             // Setup
@@ -139,10 +135,22 @@ namespace Confined.Stages.Json2
             var component = drone.GetComponent<DroneXwb>();
 
             // Set the group
-            component.SetGroup(group);
+            if (group != 0)
+            {
+                component.SetGroup(group);
+            }
 
             // Set the entry hover time
-            component.SetEntryHoverTime(spawnInfo.entryHoverTime);
+            if (spawnInfo.entryHoverTime != 0.0f)
+            {
+                component.SetEntryHoverTime(spawnInfo.entryHoverTime);
+            }
+
+            // Set the hover time
+            if (spawnInfo.hoverTime != 0.0f)
+            {
+                component.SetHoverTime(spawnInfo.hoverTime);
+            }
 
             // Subscribe to entry complete event
             component.EntryCompleteEvent.AddListener(HandleGroupEntryComplete);
@@ -158,7 +166,7 @@ namespace Confined.Stages.Json2
             }
 
             // Subscribe to group ready to move event
-            GroupReadyToMoveEvent.AddListener(() => component.State = DroneXwb.DroneState.Shooting);
+            GroupReadyToMoveEvent.AddListener(g => component.HandleGroupEntryComplete(g));
 
             // Explosion on hit - Bullet Manager OnBulletDied
             drone.GetComponent<BulletManager>().OnBulletDiedEvent += ExplodeScript.OnBulletDie;
@@ -175,8 +183,6 @@ namespace Confined.Stages.Json2
                 EnemiesAliveByGroup[group] += 1;
             }
 
-            Debug.Log($"SpawnDroneXwb Group [{group}] end");
-
             yield return null;
         }
 
@@ -191,18 +197,22 @@ namespace Confined.Stages.Json2
 
             if (SpawnedGameObjects[group] == 0)
             {
-                Debug.Log($"Group [{group}] on the move!");
-                GroupReadyToMoveEvent?.Invoke();
+                GroupReadyToMoveEvent?.Invoke(group);
             }
         }
 
         private void HandleGroupDeathComplete(int group, int pointValue)
         {
+            // handle the case where an enemy in the group has spawned and is destroyed
+            //  before the group entry has completed. removes that deadlock
+            // if (SpawnedGameObjects?[group] == null)
+            // {
+            //     Debug.LogException(new Exception($"No spawned group with group number {group}."));
+            // }
+
             // for the wait for destroy action
             if (EnemiesAliveByGroup?.ContainsKey(group) == true)
             {
-                Debug.Log($"Bogey down from group [{group}], worth [{pointValue}]!");
-
                 // add to the score
                 ScoreSerialFloat.Value += pointValue;
 
@@ -213,8 +223,10 @@ namespace Confined.Stages.Json2
 
                 if (EnemiesAliveByGroup?[group] == 0)
                 {
-                    Debug.Log($"All bogeys down from group [{group}]");
                     EnemiesAliveByGroup.Remove(group);
+
+                    // Enemies could have been destroyed before entry completed
+                    SpawnedGameObjects[group] = 0;
                 }
             }
         }
