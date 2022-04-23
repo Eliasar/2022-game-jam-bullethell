@@ -550,9 +550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8221197725c24041b8ff879915b17a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntrySpeed: 0.8
+  EntrySpeed: 45
   EntryHoverTime: 1.5
-  EntryPath: {fileID: 547035813929986511}
+  EntryPath: {fileID: 0}
   EntryCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -562,7 +562,7 @@ MonoBehaviour:
   bulletManager: {fileID: 5626946543015926512}
   MaxBullets: 5
   PlayerTransform: {fileID: 0}
-  ExplosionPrefab: {fileID: 5367481715254652580, guid: 88886fc02817cd94fa408ba09d5fa7fe, type: 3}
+  ExplosionPrefab: {fileID: 0}
   ExplosionMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   ExplosionMaterial: {fileID: 2100000, guid: 4336483410704b64c8d9ae1e1135af2e, type: 2}
   NumberOfExplosions: 30
@@ -822,14 +822,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7247569606064829977, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
   m_PrefabInstance: {fileID: 7134823332668497879}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &547035813929986511 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7247569606064829976, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
-  m_PrefabInstance: {fileID: 7134823332668497879}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d33c5139bda845d4bb8dfb401e604e17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
