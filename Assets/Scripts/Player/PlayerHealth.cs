@@ -8,9 +8,18 @@ namespace Confined
     public class PlayerHealth : MonoBehaviour
     {
         [SerializeField] private SerialFloat health;
+        [SerializeField] private float enumeratedHealth;
+
+        public void Update()
+        {
+            enumeratedHealth = health.Value;
+        }
 
         public void OnCollide(BulletContainer bullet, BulletCollider collider)
         {
+            // Debug collision info
+            Debug.Log($"Bullet: [{bullet.Position}]; Collider: [{collider.}]");
+
             // Subtract from current health
             health.Value -= bullet.Damage;
 

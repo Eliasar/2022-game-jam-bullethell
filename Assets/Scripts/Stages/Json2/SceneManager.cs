@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BulletFury;
+using Confined.Enemies;
 using Ktyl.Util;
 using UnityEngine;
 using UnityEngine.Events;
@@ -138,6 +139,11 @@ namespace Confined.Stages.Json2
             if (group != 0)
             {
                 component.SetGroup(group);
+            }
+
+            if (spawnInfo.entrySpeed != 0.0f)
+            {
+                component.SetEntrySpeed(spawnInfo.entrySpeed);
             }
 
             // Set the entry hover time
