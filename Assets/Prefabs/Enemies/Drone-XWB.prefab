@@ -547,7 +547,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8895709540427505140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c2b082b9edc35e499141c4813338c56, type: 3}
+  m_Script: {fileID: 11500000, guid: f8221197725c24041b8ff879915b17a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EntrySpeed: 0.8
@@ -557,8 +557,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Speed: 25
-  HoverTime: 0.7
-  PathController: {fileID: 1707754138221009011}
+  HoverTime: 2
+  PathController: {fileID: 0}
   bulletManager: {fileID: 5626946543015926512}
   MaxBullets: 5
   PlayerTransform: {fileID: 0}
@@ -633,7 +633,7 @@ MonoBehaviour:
   bulletLayersToBeHitBy:
     serializedVersion: 2
     m_Bits: 64
-  shape: 1
+  shape: 2
   radius: 0.5
   size: {x: 2.54, y: 1.18, z: 1}
   destroyBullet: 1
@@ -732,17 +732,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2605643375603286523, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
   m_PrefabInstance: {fileID: 3718341133541235087}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1707754138221009011 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2605643375603286524, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
-  m_PrefabInstance: {fileID: 3718341133541235087}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0008ad3ea04ed4597f9a0fd752993c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7134823332668497879
 PrefabInstance:
   m_ObjectHideFlags: 0

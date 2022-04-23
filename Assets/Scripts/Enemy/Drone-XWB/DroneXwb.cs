@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Confined
+namespace Confined.Enemies
 {
     public class DroneXwb : MonoBehaviour
     {
@@ -57,6 +57,11 @@ namespace Confined
         public void SetGroup(int group)
         {
             Group = group;
+        }
+
+        public void SetEntrySpeed(float time)
+        {
+            EntrySpeed = time;
         }
 
         public void SetEntryHoverTime(float time)
@@ -222,8 +227,8 @@ namespace Confined
 
             var pos = transform.position;
 
-            var mesh = ExplosionPrefab.GetComponent<Mesh>();
-            var material = ExplosionPrefab.GetComponent<Material>();
+            // var mesh = ExplosionPrefab.GetComponent<Mesh>();
+            // var material = ExplosionPrefab.GetComponent<Material>();
 
             var randomScale = Random.Range(0f, 1f);
             var scale = Vector3.Lerp(scaleMax, scaleMin, randomScale);

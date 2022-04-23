@@ -103,7 +103,7 @@ Transform:
   m_GameObject: {fileID: 3902413565582158713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.27, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 3576580532229201702}
   - {fileID: 3902413566245540477}
@@ -225,6 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3902413566107485458}
   - component: {fileID: 5309410740420084868}
+  - component: {fileID: 731166336}
   m_Layer: 6
   m_Name: Turret
   m_TagString: Untagged
@@ -266,11 +267,49 @@ MonoBehaviour:
     m_Bits: 128
   shape: 2
   radius: 0.5
-  size: {x: 3.1, y: 2.33, z: 1}
+  size: {x: 3.05, y: 1.26, z: 1}
   destroyBullet: 1
-  center: {x: 0, y: -0.35, z: 0}
-  pointA: {x: 0, y: 0, z: 0}
-  pointB: {x: 0, y: 0, z: 0}
+  center: {x: 0, y: -0.85, z: 0}
+  pointA: {x: 1.55, y: -1.5, z: 0}
+  pointB: {x: 0, y: 1, z: 0}
+  pointC: {x: 0, y: 0, z: 0}
+  OnCollide:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3902413565582158708}
+        m_TargetAssemblyTypeName: Confined.PlayerHealth, Assembly-CSharp
+        m_MethodName: OnCollide
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &731166336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902413566107485461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9add1c9d0cf8e4cb28a0121845c457c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletLayersToBeHitBy:
+    serializedVersion: 2
+    m_Bits: 128
+  shape: 2
+  radius: 0.5
+  size: {x: 1.99, y: 0.72, z: 1}
+  destroyBullet: 1
+  center: {x: 0, y: 0.15, z: 0}
+  pointA: {x: 1.55, y: -1.5, z: 0}
+  pointB: {x: 0, y: 1, z: 0}
   pointC: {x: 0, y: 0, z: 0}
   OnCollide:
     m_PersistentCalls:
@@ -646,9 +685,9 @@ MonoBehaviour:
   size: {x: 1.21, y: 0.94, z: 1}
   destroyBullet: 1
   center: {x: 0, y: 1.52, z: 0}
-  pointA: {x: -1.24, y: 0, z: 1.79}
-  pointB: {x: 1.12, y: 0, z: 1.84}
-  pointC: {x: 2.45, y: 0, z: 1.05}
+  pointA: {x: -1.2, y: 0, z: 1.5}
+  pointB: {x: 1.2, y: 0, z: 1.5}
+  pointC: {x: 2, y: 0, z: 0.8}
   OnCollide:
     m_PersistentCalls:
       m_Calls: []
@@ -672,9 +711,9 @@ MonoBehaviour:
   size: {x: 1.21, y: 0.94, z: 1}
   destroyBullet: 1
   center: {x: 0, y: 1.52, z: 0}
-  pointA: {x: -2.45, y: 0, z: 1.05}
-  pointB: {x: -1.12, y: 0, z: 1.84}
-  pointC: {x: 1.22, y: 0, z: 1.79}
+  pointA: {x: -2, y: 0, z: 0.8}
+  pointB: {x: -1.2, y: 0, z: 1.5}
+  pointC: {x: 1.2, y: 0, z: 1.5}
   OnCollide:
     m_PersistentCalls:
       m_Calls: []

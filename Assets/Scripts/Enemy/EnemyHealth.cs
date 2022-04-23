@@ -1,5 +1,6 @@
 using BulletFury;
 using BulletFury.Data;
+using Confined.Enemies;
 using UnityEngine;
 
 namespace Confined
