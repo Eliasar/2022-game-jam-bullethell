@@ -1,9 +1,9 @@
 using UnityEngine;
-
 using BulletFury;
+using BulletFury.Data;
+using Ktyl.Util;
 using System.Collections.Generic;
 using System.Linq;
-using BulletFury.Data;
 
 namespace Confined
 {
@@ -23,6 +23,9 @@ namespace Confined
         // Turret properties
         private List<BulletManager> Turrets;
 
+        // Player Health properties
+        [SerializeField] SerialFloat PlayerHealth;
+
         private void Awake()
         {
             Application.targetFrameRate = 120;
@@ -37,6 +40,11 @@ namespace Confined
         // Update is called once per frame
         void Update()
         {
+            if (PlayerHealth <= 0.0f)
+            {
+                return;
+            }
+
             // Movement
             v = Input.GetAxisRaw("Vertical");
 
@@ -49,7 +57,7 @@ namespace Confined
             // Shield and Turret rotation
             var rotatorDirection = Input.mousePosition - Camera.main.WorldToScreenPoint(RotationObject.transform.position);
             var rotatorAngle = Mathf.Atan2(rotatorDirection.y, rotatorDirection.x) * Mathf.Rad2Deg;
-            RotationObject.rotation = Quaternion.AngleAxis(rotatorAngle + 90, Vector3.forward);
+            RotationObject.rotation = Quaternion.AngleAxis(rotatorAngle - 90, Vector3.forward);
 
             // Turret Firing
             if (Input.GetMouseButton(0))

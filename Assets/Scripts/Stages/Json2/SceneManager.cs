@@ -33,6 +33,9 @@ namespace Confined.Stages.Json2
         [Header("Enemies")]
         [SerializeField] private GameObject DroneXwbPrefab;
 
+        // Infinite play
+        public bool IsLevelComplete = false;
+
         private void Start()
         {
             SpawnedGameObjects = new Dictionary<int, int>();
@@ -49,6 +52,22 @@ namespace Confined.Stages.Json2
             StartCoroutine(PlayActions(LevelRoot.actions));
         }
 
+        private void Update()
+        {
+            if (IsLevelComplete)
+            {
+                IsLevelComplete = false;
+
+                Debug.Log($"Loading level 1...");
+                // LevelRoot = JsonUtility.FromJson<Confined.Stages.Json2.Root>(Stage1Asset.text);
+
+                Debug.Log($"Loaded level [{LevelRoot.levelName}]");
+
+                // Play the actions, coroutine, duh
+                StartCoroutine(PlayActions(LevelRoot.actions));
+            }
+        }
+
         private IEnumerator PlayActions(Confined.Stages.Json2.Action[] actions)
         {
             for (int i = 0; i < actions.Length; i++)
@@ -60,7 +79,7 @@ namespace Confined.Stages.Json2
                     case "spawn":
                         // Get all spawns
                         var spawns = action.spawns;
-                        
+
                         // For every spawn, get the prefab and instantiate based on timer
                         for (int j = 0; j < spawns.Length; j++)
                         {
@@ -94,6 +113,8 @@ namespace Confined.Stages.Json2
 
                 yield return null;
             }
+            
+            IsLevelComplete = true;
         }
 
         private IEnumerator SpawnDroneXwb(Spawn spawnInfo, int group)
@@ -179,7 +200,7 @@ namespace Confined.Stages.Json2
 
             // Subscribe to death event
             component.DeathEvent.AddListener(HandleGroupDeathComplete);
-            
+
             if (EnemiesAliveByGroup?.ContainsKey(group) == false)
             {
                 EnemiesAliveByGroup.Add(group, 1);

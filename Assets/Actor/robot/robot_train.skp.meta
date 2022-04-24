@@ -7,8 +7,38 @@ SketchUpImporter:
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
+      name: 00_G-black_tint0x7A3C21FF
+    second: {fileID: 2800000, guid: c3664ef5ab4612f4cb544bfa1ae62c8d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 00_G-hatch_tint0x773B21FF
+    second: {fileID: 2800000, guid: 72f005ca750c3af4493cb81bc249f33b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 00_G-maze_tint0x874329FF
+    second: {fileID: 2800000, guid: d83c473f9490ec446980e8fc9b229306, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
       name: 00_G-nineties_tint0x4A4C4CFF
-    second: {fileID: 2800000, guid: 443abe8d96570a544a5992198b79bdaf, type: 3}
+    second: {fileID: 2800000, guid: de10369c5df9132489e22f21704dcd60, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 00_G-nineties_tint0x723923FF
+    second: {fileID: 2800000, guid: 239772000b971d14592fd0ce5701df4d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 00_G-warning_tint0x206C72FF
+    second: {fileID: 2800000, guid: e86181c7c9a55554484b249bc3bd97a8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: 00_G-white_tint0xAA542FFF
+    second: {fileID: 2800000, guid: 8a591cfacaf5fed49bc0925874e9e271, type: 3}
   materials:
     materialImportMode: 2
     materialName: 2
@@ -39,7 +69,7 @@ SketchUpImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.00508
+    globalScale: 0.0076200003
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -90,7 +120,7 @@ SketchUpImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.00508
+    globalScale: 0.0076200003
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -107,8 +137,8 @@ SketchUpImporter:
   assetBundleVariant: 
   generateBackFace: 1
   mergeCoplanarFaces: 0
-  selectedNodes: 0000000001000000
+  selectedNodes: 000000000100000002000000
   assetHash:
     serializedVersion: 2
-    Hash: 0b2abe7a3bc24600cf1be16f5e2f610c
+    Hash: 0aefdebca007e34edca3c4804333825a
   fileUnit: 0
