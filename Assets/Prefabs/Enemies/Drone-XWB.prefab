@@ -441,7 +441,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6489908872837060713}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.97629607, z: -0.2164396, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -449,7 +449,7 @@ Transform:
   - {fileID: 7043744212369756039}
   m_Father: {fileID: 741993969271230533}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: 180, z: 0}
 --- !u!33 &7418768365938052470
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -552,13 +552,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntrySpeed: 45
   EntryHoverTime: 1.5
-  EntryPath: {fileID: 0}
+  EntryPath: {fileID: 547035813929986511}
   EntryCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
   Speed: 25
   HoverTime: 2
-  PathController: {fileID: 0}
+  PathController: {fileID: 1707754138221009011}
   bulletManager: {fileID: 5626946543015926512}
   MaxBullets: 5
   PlayerTransform: {fileID: 0}
@@ -589,9 +589,9 @@ MonoBehaviour:
   drawPriority: 0
   bulletSettings: {fileID: 11400000, guid: 04e38620dc56a574ab143e3b7b668617, type: 2}
   spawnSettings: {fileID: 11400000, guid: deb31fb7b4e7e62429ef320bc34d0dbb, type: 2}
-  currentActiveBullets: 0
-  maxActiveBullets: 0
-  seed: 
+  currentActiveBullets: 20
+  maxActiveBullets: 20
+  seed: 2660ad18-7a6c-497b-898e-9015723be396
   randomiseSeedOnAwake: 1
   playingEditorAnimation: 0
   OnBulletDied:
@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d72e17c8a8bd46c409339b48083721d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 15
   droneScript: {fileID: 1708712486171835468}
 --- !u!1001 &3718341133541235087
 PrefabInstance:
@@ -725,6 +725,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2605643375603286524, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
+      propertyPath: DrawPaths
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
 --- !u!4 &1707754138221009012 stripped
@@ -732,6 +736,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2605643375603286523, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
   m_PrefabInstance: {fileID: 3718341133541235087}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1707754138221009011 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2605643375603286524, guid: 4fb4bbcc6dfe0ad4789e47b8b7cc5d7d, type: 3}
+  m_PrefabInstance: {fileID: 3718341133541235087}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0008ad3ea04ed4597f9a0fd752993c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7134823332668497879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -757,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7247569606064829976, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
       propertyPath: DrawPath
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7247569606064829977, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
       propertyPath: m_RootOrder
@@ -822,3 +837,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7247569606064829977, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
   m_PrefabInstance: {fileID: 7134823332668497879}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &547035813929986511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7247569606064829976, guid: b297eb91c8c1dcf4ea50e1b3f6ab6cda, type: 3}
+  m_PrefabInstance: {fileID: 7134823332668497879}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33c5139bda845d4bb8dfb401e604e17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

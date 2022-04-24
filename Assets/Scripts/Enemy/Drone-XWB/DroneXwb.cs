@@ -94,7 +94,8 @@ namespace Confined.Enemies
             }
 
             // Look at the player
-            transform.up = PlayerTransform.position - transform.position;
+            transform.LookAt(PlayerTransform, Vector3.back);
+            // transform.rotation = new Quaternion(0, 0, transform.rotation.z, 0);
 
             switch (State)
             {
@@ -226,9 +227,6 @@ namespace Confined.Enemies
             float timeToShrink = 0.5f;
 
             var pos = transform.position;
-
-            // var mesh = ExplosionPrefab.GetComponent<Mesh>();
-            // var material = ExplosionPrefab.GetComponent<Material>();
 
             var randomScale = Random.Range(0f, 1f);
             var scale = Vector3.Lerp(scaleMax, scaleMin, randomScale);

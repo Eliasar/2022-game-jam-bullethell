@@ -3,12 +3,7 @@ guid: e4e31a65c67a9754faa2e8ba22ac5412
 SketchUpImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: 00_G-maze_tint0x8C8084FF
-    second: {fileID: 2800000, guid: 0f75ee4fb18095d4491384a3e675d99d, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 2
@@ -39,7 +34,7 @@ SketchUpImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.00508
+    globalScale: 0.0076200003
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -90,7 +85,7 @@ SketchUpImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.00508
+    globalScale: 0.0076200003
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
@@ -110,5 +105,5 @@ SketchUpImporter:
   selectedNodes: 000000000100000002000000
   assetHash:
     serializedVersion: 2
-    Hash: 1adeda82b564440c35c269bbe17a850e
+    Hash: 4339fdafa29e8b131d5ca25a9f81e08d
   fileUnit: 0

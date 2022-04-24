@@ -18,7 +18,7 @@ namespace Confined
         public void OnCollide(BulletContainer bullet, BulletCollider collider)
         {
             // Debug collision info
-            Debug.Log($"Bullet: [{bullet.Position}]; Collider: [{collider.}]");
+            Debug.Log($"Bullet: [{bullet.Position}]; Collider: [{collider}]");
 
             // Subtract from current health
             health.Value -= bullet.Damage;
